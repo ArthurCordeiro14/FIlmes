@@ -8,13 +8,18 @@ import { Observable } from 'rxjs';
 })
 export class FilmeService {
   
-
   private http = inject(HttpClient)
+  private APIURL = 'https://www.omdbapi.com/?apikey=c33cae24&type=movie'
+
+  constructor() { }
 
 
+  BuscaUm(titulo:string):Observable<Filme>{
+    return this.http.get<Filme>(`${this.APIURL}&t=${titulo}`)
+  }
 
-  obterFilme(titulo:string):Observable<Filme>{
-    return this.http.get<Filme>(`https://www.omdbapi.com/?t=${titulo}&apikey=c33cae24`)
+  BuscaVarios(titulo:string):Observable<any>{
+    return this.http.get<Filme[]>(`${this.APIURL}&s=${titulo}`)
   }
 
 }
