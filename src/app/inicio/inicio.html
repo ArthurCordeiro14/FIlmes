@@ -1,5 +1,44 @@
+<div class="bordas">
+    <div class="meio">
+        <h2>Buscar Filme</h2>
 
-@for (filme of filmes; track filme.Title) {
-    <p>{{filme.Title}}</p>
-    <p>a</p>
-}
+        <form (ngSubmit)="buscar()" #formRef="ngForm">
+            <input [(ngModel)]="titulo" name="titulo" placeholder="Digite o título" class="p" required />
+
+            <label>
+                <input type="radio" [(ngModel)]="tipo" name="tipo" value="t" /> Um filme
+            </label>
+            <label>
+                <input type="radio" [(ngModel)]="tipo" name="tipo" value="s" /> Lista
+            </label>
+
+            <button class="p" type="submit">Buscar</button>
+        </form>
+
+        <div class="resultados">
+            @if (resultado?.Title && tipo === 't') {
+            <div class="card">
+                <h3>{{ resultado.Title }} ({{ resultado.Year }}) {{resultado.Genre}}</h3>
+                <img [src]="resultado.Poster" alt="poster" width="200" />
+
+                <p>Diretor(es) :{{ resultado.Director }}. Escritor(es): {{ resultado.Writer }}.<br>Atores: {{
+                    resultado.Actors }}.<br>Linguas Disponiveis:{{ resultado.Language }}.<br>País: {{ resultado.Country
+                    }}.<br>{{ resultado.Plot }}</p>
+            </div>
+            }
+
+            @if (tipo === 's' && resultado?.Search) {
+            <div class="lista">
+                <h3>Resultados para "{{ titulo }}":</h3>
+                @for (filme of resultado.Search; track filme.imdbID) {
+                <div class="card" style="margin-bottom: 1rem;">
+                    <strong>{{ filme.Title }}</strong> ({{ filme.Year }})
+                    <br />
+                    <img [src]="filme.Poster" alt="poster" width="150" />
+                </div>
+                }
+            </div>
+            }
+        </div>
+    </div>
+</div>
